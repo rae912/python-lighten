@@ -1,0 +1,44 @@
+{% extends "header.html" %}
+<script src="/media/js/jquery.js" language="javascript"  type="text/javascript" ></script>
+<script src="/media/js/jquery.flot.js" language="javascript"  type="text/javascript" ></script>
+{% block title %}运维后台{% endblock %}
+{% block contents %}
+
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">报警系统</a>
+<em>&rsaquo;</em> <a href="#">报警阀值</a></div>
+
+<div class="bm">
+<div id="dataTable">
+<div class="contbox mbn">
+
+
+<div style="text-align: center">
+    <form action='/monitorsys/setalerm/' method='POST'>
+    <table align=center>
+    {{form.as_table}}
+    </table>
+<p>
+   <input type="submit" value="提交">
+   <input type="button" value="退出" onclick="closeWin()">
+</p>
+
+</form>
+</div>
+</div>
+</div>
+
+</div>
+</td>
+
+<script language="javascript"> 
+function closeWin() { 
+window.location = '/monitorsys/serveralerm/';
+} 
+</script>
+
+{% endblock %}
+
+
