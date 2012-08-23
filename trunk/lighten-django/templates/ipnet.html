@@ -1,0 +1,59 @@
+{% extends "header.html" %}
+
+{% block title %}运维后台{% endblock %}
+{% block contents %}
+<script type="text/javascript"  src="/media/js/ipadd.js"></script>
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">系统信息</a>
+<em>&rsaquo;</em> <a href="#">IP段管理</a></div>
+<div class="bm">
+    <div id="dataTable">
+    <div class="title1">查询方式:</div>
+	 <form action="/infosys/ipnet/" method="post">
+    <span class="spt_1 b">IP段：</span>
+    <input class="f_inp" size="20" type="text" name="ipname" />
+    <button name="cxsb" type="submit" class="pnc pn"><span>查询</span></button>
+    </form>
+<h3><a onclick="alertWin('添加IP段','这里是内容',250,150);" class="add"><span>添加设备</span></a><div class="title2">设备列表:</div></h3>
+<div class="contbox mbn">
+<table id="sortTable1">
+        <thead>
+            <tr>
+                <th width="70">IP</th>
+                <th class="hc" width="70">机房名称</th>
+                <th class="hc" width="10">操作</th>
+            </tr>
+        </thead>
+        {% for ipnet in ipnet %}
+            <tr>
+                <td>{{ ipnet.ipnet }}</td>
+                <td class="hc"><span>{{ ipnet.netname }}</span></td>
+                <td class="hc"><a href="#">编辑</a><a href="#">删除</a></td>
+            </tr>
+        {% endfor %}
+</table>
+<div>
+{% if ipnet.has_previous %}
+	<a href="?page={{ ipnet.previous_page_number }}">&lt; 上一页</a>
+{% endif %}
+<span>
+{% for p in page_range %}
+	{% ifequal p ipnet.number %}
+	<span class="current">{{p}}</span>
+{% else %}
+	<a href="?page={{p}}" title="第{{p}}页">{{p}}</a>
+{% endifequal %}
+{% endfor %}
+</span>
+{% if ipnet.has_next %}
+	<a href="?page={{ ipnet.next_page_number }}">下一页&gt; </a>
+{% endif %}
+	<a >[第{{ ipnet.number }}/{{ ipnet.paginator.num_pages }}页]</a>
+</div>
+</div>
+</div>
+</div>
+</td>
+{% endblock %}

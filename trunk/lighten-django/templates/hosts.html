@@ -1,0 +1,62 @@
+{% extends "header.html" %}
+
+{% block title %}运维后台{% endblock %}
+{% block contents %}
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">系统信息</a>
+<em>&rsaquo;</em> <a href="#">主机信息</a></div>
+<div class="bm">
+    <div id="dataTable">
+    <div class="title1">查询方式:</div>
+    <form action="/infosys/hosts/" method="post">
+    <span class="spt_1 b">IP：</span>
+    <input class="f_inp" size="20" type="text" name="ipname" />
+    <button type="submit" class="pnc pn"><span>查询</span></button>
+    </form>
+<div class="title2">服务器列表:</div>
+<div class="contbox mbn">
+<table id="sortTable1">
+        <thead>
+            <tr>
+                <th width="50">IP</th>
+                <th class="hc" width="50">MAC地址</th>
+                <th class="hc" width="40">机房</th>
+                <th class="hc" width="150">系统信息</th>
+                <th class="hc" width="15">操作</th>
+            </tr>
+        </thead>
+        {% for host in host %}
+            <tr>
+                <td>{{ host.ip }}</td>
+                <td class="hc"><span>{{ host.mac }}</span></td>
+                <td class="hc"><span>{{ host.idc }}</span></td>
+                     <td class="hc"><span>{{ host.infosys }}</span></td>
+                <td class="hc"><a href ="#">查看</a></td>
+            </tr>
+        {% endfor %}
+</table>
+<div>
+{% if host.has_previous %}
+	<a href="?page={{ host.previous_page_number }}">&lt; 上一页</a>
+{% endif %}
+<span>
+{% for p in page_range %}
+	{% ifequal p host.number %}
+	<span class="current">{{p}}</span>
+{% else %}
+	<a href="?page={{p}}" title="第{{p}}页">{{p}}</a>
+{% endifequal %}
+{% endfor %}
+</span>
+{% if host.has_next %}
+	<a href="?page={{ host.next_page_number }}">下一页&gt; </a>
+{% endif %}
+	<a >[第{{ host.number }}/{{ host.paginator.num_pages }}页]</a>
+</div>
+</div>
+</div>
+</div>
+</td>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "header.html" %}
+{% block title %}运维后台{% endblock %}
+{% block contents %}
+<script language="javascript" type="text/javascript" src="/media/js/excanvas.min.js"></script>
+<script language="javascript" type="text/javascript" src="/media/js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="/media/js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="/media/js/mapping.js"></script>
+<script language="javascript" type="text/javascript" src="/media/js/date.js"></script>
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">监控系统</a>
+<em>&rsaquo;</em> <a href="/monitorsys/state">服务器监控</a><em>&rsaquo;</em> <a href="#">{{ ip.ip }}</a></div>
+<div class="bm">
+<div id="dataTable">
+	<form id="form_1" action="#" methed="post">
+			<input type="hidden" name="mac" value="{{ mmac }}" />
+                <span class="spt_1 b">查询起始时间：</span>
+                <input type='text' name="strtime" onclick='SelectDate(this)' class="f_inp"/>
+                <span class="spt_1 b">终止时间：</span>
+                <input type='text' name="endtime" onclick='SelectDate(this)' class="f_inp"/>
+                <button type="submit" class="pnc pn"><span>查询</span></button>
+       </form>
+	   <span class="spt_1 b">刷新频率：</span>
+	   <select id="frequency">
+            	<option selected="selected" value="5">5 min</option>
+                <option value="10">10 min</option>
+            </select>
+            <label>倒计时：<span id="runtime">300</span></label>
+
+<div class="title2">监控列表:</div>
+<div class="contbox mbn">
+<div id="main_map">
+<div class="group_b">
+	<div class="title_a"><span>{{ ip.ip }}网卡流量统计</span></div>
+	<div class="border">
+	<div class="div_1" id="network"></div>
+    	<div class="div_2" id="network_text"></div>
+    	<div class="clear"></div>
+    	<p class="p_a"><span>输入流量最大值:{{ inflow }}MB</span><span> 输出流量最大值:{{ outflow }}MB</span></p></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+	var datasets = {
+			{{ flow|safe }}
+            };
+   	plotAccordingToChoices(datasets,'network','network_text');
+
+</script>
+<div class="group_b">
+        <div class="title_a"><span>{{ ip.ip }}网卡数据包统计</span></div>
+        <div class="border">
+        <div class="div_1" id="network1"></div>
+        <div class="div_2" id="network1_text"></div>
+        <div class="clear"></div>
+        <p class="p_a"><span>接受包最大值:{{ inpack }}</span><span> 发送包最大值:{{ outpack }}</span></p></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+        var datasets = {
+                        {{ package|safe }}
+            };
+        plotAccordingToChoices(datasets,'network1','network1_text');
+
+</script>
+<div class="group_b">
+        <div class="title_a"><span>{{ ip.ip }}网卡连接数统计</span></div>
+        <div class="border">
+        <div class="div_1" id="network2"></div>
+        <div class="div_2" id="network2_text"></div>
+        <div class="clear"></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+        var datasets = {
+                        {{ count|safe }}
+            };
+        plotAccordingToChoices(datasets,'network2','network2_text');
+
+</script>
+<div class="group_b">
+        <div class="title_a"><span>{{ ip.ip }}内存使用情况</span></div>
+        <div class="border">
+        <div class="div_1" id="network4"></div>
+        <div class="div_2" id="network4_text"></div>
+        <div class="clear"></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+        var datasets = {
+                        {{ mem|safe }}
+            };
+        plotAccordingToChoices(datasets,'network4','network4_text');
+
+</script>
+<div class="group_b">
+        <div class="title_a"><span>{{ ip.ip }}CPU负载统计</span></div>
+        <div class="border">
+        <div class="div_1" id="network5"></div>
+        <div class="div_2" id="network5_text"></div>
+        <div class="clear"></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+        var datasets = {
+                        {{ load|safe }}
+            };
+        plotAccordingToChoices(datasets,'network5','network5_text');
+
+</script>
+<div class="group_b">
+        <div class="title_a"><span>{{ ip.ip }}CPU使用率统计</span></div>
+        <div class="border">
+        <div class="div_1" id="network3"></div>
+        <div class="div_2" id="network3_text"></div>
+        <div class="clear"></div>
+</div>
+<script id="source" language="javascript" type="text/javascript">
+        var datasets = {
+                        {{ use|safe }}
+            };
+        plotAccordingToChoices(datasets,'network3','network3_text');
+
+</script>
+</div>
+</div>
+</div>
+</div>
+</td>
+<script>
+var runtime_n=0;
+var runtime_timeobj=null;
+$('#frequency').change(function(){
+        var v=$(this).val();
+        if(v>0){
+                if(runtime_timeobj!=null){
+                        clearInterval(runtime_timeobj,200);
+                        runtime_n=0;
+                }
+                runtime_timeobj=setInterval(function(){
+                        runtime_n++;
+                        $('#runtime').html(v*60-runtime_n);
+                        if(runtime_n>=v*60){
+                                window.location.reload();
+                        }
+                },1000);
+        }
+})
+$('#frequency').change();
+</script>
+{% endblock %}
+

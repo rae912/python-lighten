@@ -1,0 +1,106 @@
+{% extends "header.html" %}
+
+{% block title %}点亮Python -- 运维后台{% endblock %}
+{% block contents %}
+<script type="text/javascript" src="/media/js/jquery.js"></script>
+<script type="text/javascript" src="/media/js/jquery.datepick.js"></script>
+<script type="text/javascript" src="/media/js/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript">  
+$(function() {  
+	var nowdays = new Date();
+	var dateConfig = {
+                //showOn: 'only',               //二个都显示  
+                //buttonImage: 'icon_calendar.gif',  //加载图片  
+                buttonImageOnly: true,        //显示图片的地方有一个突出部分，这个就是隐藏那玩意的  
+                changeFirstDay: false,        //这个参数干什么的呢，星期一是日历的第一个，不可以改动的  
+                numberOfMonths: 1,            //显示二个月，默认一个月  
+                //minDate: nowdays,             //显示最小时间是今天  
+                dateFormat: 'yy-mm-dd',       //日期格式  
+                yearRange: '-60:+60'          //前后20年，不过这根minDate是今天有冲突，自己去试吧。  
+        };  
+  
+        $('#goodplugin').datepick(dateConfig);  
+        $('#goodplugin2').datepick(dateConfig); 
+        //$('#showdate').datepick(dateConfig);  
+});  
+</script>
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">系统信息</a>
+<em>&rsaquo;</em> <a href="#">归属信息</a></div>
+<div class="bm">
+<div id="dataTable">
+<!--<div style="text-align: left" id="cz" onload="openwin()">-->
+<div id="showdate">
+<h3><div class="title1">查询方式:</div></h3>
+<div class="pageHeader">
+		<form onsubmit="return navTabSearch(this);" action="{% url assetsysfwqgssearch %}" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<span class="spt_1 b">序列号：</span>
+					<input class="f_inp" size="20" type="text" name="q" />
+					<button name="cxsb" type="submit" class="pnc pn"><span>查询</span></button></li>
+				</ul>
+		</div>
+		</form>
+<h3><a href="{%url assetsysblinfo%}" class="add"><span>添加设备</span></a><div class="title2">归属列表:</div></h3>
+</div>
+
+<div class="contbox mbn">
+
+<table id="sortTable1">
+	<thead>
+		<tr>
+			<th>序列号</th>
+			<th>部门</th>
+			<th>负责人</th>
+			<th>机柜编号</th>
+			<th>用途</th>
+			<th>上架时间</th>
+		</tr>
+	</thead>
+	{% for v in guishu %}
+		<tr>
+			<td>{{v.SerialNum}}</td>
+			<td>{{v.Department}}</td>
+			<td>{{v.Competent}}</td>
+			<td>{{v.CabinetNum}}</td>
+			<td>{{v.Purpose}}</td>
+			<td>{{v.AddTime}}</td>
+
+<td>
+<!--<a href ="javascript:void(0);" onclick="upwin(v.SerialNum)" class="add"><span>修改</span></a>-->
+<a href="{%url assetsysfwqgsup v.SerialNum%}">修改</a>
+<p>
+<!--<input type="button" value="删除" onClick="window.location.href='/assetsys/hdinfodel/{{v.SerialNum}}';"/>-->
+<a href="{%url assetsysfwqgsdel v.SerialNum%}" onclick="return confirm('你确认要删除吗?')">删除</a>
+</p>
+</td>
+</tr>
+{% endfor %}
+</table>
+<div>
+{% if guishu.has_previous %}
+	<a href="?page={{ guishu.previous_page_number }}">&lt; 上一页</a>
+{% endif %}
+<span>
+{% for p in page_range %}
+	{% ifequal p note.number %}
+	<span class="current">{{p}}</span>
+{% else %}
+	<a href="?page={{p}}" title="第{{p}}页">{{p}}</a>
+{% endifequal %}
+{% endfor %}
+</span>
+{% if guishu.has_next %}
+	<a href="?page={{ guishu.next_page_number }}">下一页&gt; </a>
+{% endif %}
+	<a >[第{{ guishu.number }}/{{ guishu.paginator.num_pages }}页]</a>
+</div>
+</div>
+</div>
+</div>
+</td>
+{% endblock %}

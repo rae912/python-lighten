@@ -1,0 +1,224 @@
+{% extends "header.html" %}
+{% block title %}运维后台{% endblock %}
+{% block contents %}
+<script src="/media/js/jquery.js" language="javascript"  type="text/javascript" ></script>
+<script src="/media/js/jquery.flot.js" language="javascript"  type="text/javascript" ></script>
+
+<style>
+    #main {    
+        background: #FCFCFC;   
+        border: 2px solid #BEBEBE;
+        width: 100%;
+        height: 30%;
+    }
+    
+    .border {
+        background: #F0F0F0;   
+        margin: 5px auto 5px auto ; 
+        border: 1px solid #BEBEBE;
+        width: 650px;
+        height:270px;
+    }
+    
+ 	.title {
+        font-family:"Times New Roman",Georgia,Serif;
+    	text-align:center;
+    	font-size:16px;
+    }
+    
+    #content1 {
+        background: #FCFCFC;   
+        border: 1px solid #BEBEBE;
+        width: 500px;
+        height:200px;
+        position:relative;
+        left: 75px;
+        top: 10px;
+    }
+    
+    #content2 {
+        background: #FCFCFC;   
+        border: 1px solid #BEBEBE;
+        width: 500px;
+        height:200px;
+        position:relative;
+        left: 75px;
+        top: 10px;
+    }
+	
+    #content3 {
+        background: #FCFCFC;   
+        border: 1px solid #BEBEBE;
+        width: 500px;
+        height:200px;
+        position:relative;
+        left: 75px;
+        top: 10px;
+    }
+    
+    #content4 {
+        background: #FCFCFC;   
+        border: 1px solid #BEBEBE;
+        width: 500px;
+        height:200px;
+        position:relative;
+        left: 75px;
+        top: 10px;
+    }
+    
+    #content5{
+        background: #FCFCFC;   
+        border: 1px solid #BEBEBE;
+        width: 500px;
+        height:200px;
+        position:relative;
+        left: 75px;
+        top: 10px;
+    }
+
+    span {
+        position:relative;
+        top: 10px;			
+    }   
+</style>
+
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">监控系统</a>
+<em>&rsaquo;</em> <a href="#">服务器监控</a></div>
+<div class="bm">
+<div id="dataTable">
+<div class="contbox mbn">
+
+    <div id="main"> 
+        刷新时间间隔：<input id="updateInterval" type="text" value="" style="text-align: right; width:5em">  
+        <div class="title">
+            <div class="bm_h cl"> 
+                <span> 网络流量 </span>       
+    	    </div>
+    	</div>
+        <div class="border">
+             <div id="content1">
+    	     </div>
+    	</div>
+    	<div class="title">
+    	     <div class="bm_h cl"> 
+    	  	      <span> 网络包 </span>                   
+    	     </div>
+    	  </div>
+        <div class="border">
+             <div id="content2">
+                   
+    	     </div>
+    	</div>
+    	<div class="title">
+		    <div class="bm_h cl"> 
+    	  	   <span> CPU使用率</span>                   
+    	    </div>
+    	</div>
+        <div class="border">
+             <div id="content3">
+                   
+    	      </div>
+    	</div>
+        <div class="title">
+            <div class="bm_h cl"> 
+                 <span> 内存使用率 </span>                   
+            </div>
+        </div>
+        <div class="border">
+             <div id="content4">
+                   
+              </div>
+        </div>
+        <div class="title">
+            <div class="bm_h cl"> 
+                 <span>CPU负载</span>                   
+            </div>
+        </div>
+        <div class="border">
+             <div id="content5">
+                   
+              </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+</td>
+<script type="text/javascript" >
+
+    // 要绘制的数据和数据的数据点数  
+    var data = [], totalPoints = 300;  
+    // 获得一些随机数据  
+    /*
+    function getRandomData() {  
+        if (data.length > 0)  
+            datadata = data.slice(1);  
+        while (data.length < totalPoints) {  
+            var prev = data.length > 0 ? data[data.length - 1] : 50;  
+            var y = prev + Math.random() * 10 - 5;  
+            if (y < 0)  
+                y = 0;  
+            if (y > 100)  
+                y = 100;  
+            data.push(y);  
+        }  
+        var res = [];  
+        for (var i = 0; i < data.length; ++i)  
+            res.push([i, data[i]])  
+        return res;  
+    }  
+    */
+
+    var updateInterval = 1000; // 刷新间隔  
+    // 更改刷新间隔时间  
+    $("#updateInterval").val(updateInterval).change(function () {  
+        var v = $(this).val();  
+        if (v && !isNaN(+v)) {  
+            updateInterval = +v;  
+            if (updateInterval < 1000)  
+                updateInterval = 1000;  
+            if (updateInterval > 60000)  
+                updateInterval = 60000;  
+            $(this).val("" + updateInterval);  
+        }  
+    });  
+    // 设置绘图参数  
+    var options = {  
+        series: { shadowSize: 0 }, // 绘制线的阴影，不绘制设置 0  
+        yaxis: { min: 0, max: 100 }, // Y 轴的最大值最小值  
+        //xaxis: { show: true } // 不显示 X 轴  
+    };  
+	
+    function update(getData, htmlId) {  
+        // 绘图对象 参数为：绘制地点、数据、属性 
+        var plot = $.plot($(htmlId), [ getData ], options); 	
+        // 要实现动态绘图，只需重新设置其数据即可  
+        plot.setData([ getData ]); // 设置数据  
+        // 轴线不改变，不用调用 plot.setupGrid()  
+        plot.draw();  
+    }  
+
+    function getMonitorData() {
+        $.get('/monitorsys/servermon/json/', function (data, textStatus) {
+            var objdata = eval('(data)');
+            //alert(Object.prototype.toString.apply(getdata));
+
+            // 加载调用  
+            update(objdata.network_inflow,"#content1");  
+            update(objdata.network_inpackage,"#content2");   
+            update(objdata.cpu_usage,"#content3"); 
+            update(objdata.mem_usage,"#content4");           
+            update(objdata.cpu_load,"#content5");           
+        }, 'json' );  
+    };
+getMonitorData()
+setInterval("getMonitorData()",updateInterval); 
+
+</script>
+
+{% endblock %}

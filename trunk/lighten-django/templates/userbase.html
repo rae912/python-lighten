@@ -1,0 +1,51 @@
+{% extends "header.html" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+{% block title %}点亮Python -- 运维后台{% endblock %}
+{% block contents %}
+<script LANGUAGE="javascript">
+function modify()
+{  
+	window.open ("/user/basemodify/", "newwindow", "left=500,height=500, width=500, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no")
+}
+</script>
+
+
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">用户系统</a>
+<em>&rsaquo;</em> <a href="#">基本信息</a>
+</div>
+<div class="bm">
+    <div id="dataTable">
+      <h3><a href ="/user/usermodify/" onclick="openwin()" class="add"><span>修改信息</span></a>基本信息管理<span class="lab" style="padding-left:5px;vertical-align: middle;"><a href="javascript:void(0);" onmouseover="showTips('test',this,'myNormalSite_div_tips')"></a></span></h3>
+<div class="contbox mbn">
+<div> 
+<script type="text/javascript" src="/media/js/jquery.js"></script>  
+<script type="text/javascript" src="/media/js/jquery.datepick.js"></script>  
+<script type="text/javascript" src="/media/js/jquery.ui.datepicker-zh-CN.js"></script>  
+<link type="text/css" href="/media/css/smoothness.datepick.css" rel="stylesheet" />  
+</div>
+<div id="cxsb">
+
+<table>
+<tr><td width="60px">用户名：</td><td>{{k.username}}</td><td rowspan="4" width="200px"><img src="/media/images/header/{{k.avatar}}" alt="" /></td></tr>
+<tr><td width="60px">性 别：</td><td>{{k.sex}}</td></td></tr>
+<tr><td>邮 箱：</td><td>{{k.email}}</td></tr>
+<tr><td>电 话：</td><td>{{k.phone}}</td></tr>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+
+</body>
+</html>

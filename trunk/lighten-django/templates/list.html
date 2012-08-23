@@ -1,0 +1,39 @@
+{% if info %}
+	{% for post in posts_list.object_list %}
+		<div class="title">
+			<a href='/paging/{{ post.id }}'>{{ post.title }}</a>	序号:{{ post.id }}<br />                                     
+       	作者:{{ post.user.username }}<br />                          		
+			内容:{{ post.details }}<br />
+		</div>
+	{% endfor %}
+{% else %}
+	<p>对不起没有文章奥!</p>
+{% endif %}
+
+<hr />
+
+{% if has_previous %}
+	<a href="/?page={{ previous }}">上一页</a>
+{% endif %}
+
+{% if has_next %}
+	<a href="/?page={{ next }}"></a>
+{% endif %}
+
+{% if posts_list.has_previous %}
+	<a href="?page={{ posts_list.previous_page_number }}" title="下一页">上一页</a>&nbsp;
+{% endif %}
+
+{% for p in page_range %}
+	{% ifequal p posts_list.number %}
+		<span>{{ p }}</span>
+	{% else %}
+		<a href="?page={{ p }}" title="第{{ p }}页">{{ p }}</a>
+	{% endifequal %}
+{% endfor %}
+
+&nbsp;
+
+{% if posts_list.has_next %}
+	<a href="?page={{ posts_list.next_page_number }}" title="下一页">下一页</a>&nbsp;
+{% endif %}
