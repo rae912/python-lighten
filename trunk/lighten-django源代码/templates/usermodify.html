@@ -1,0 +1,45 @@
+{% extends "header.html" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+{% block title %}点亮Python -- 运维后台{% endblock %}
+{% block contents %}
+<td class="content">
+<div class="bm_h cl"></div>
+<div class="path">
+<a href="#">用户系统</a>
+<em>&rsaquo;</em> <a href="#">基本信息</a>
+</div>
+<div class="bm">
+    <div id="dataTable">
+<div class="contbox mbn">
+<div> 
+<script type="text/javascript" src="/media/js/jquery.js"></script>  
+<script type="text/javascript" src="/media/js/jquery.datepick.js"></script>  
+<script type="text/javascript" src="/media/js/jquery.ui.datepicker-zh-CN.js"></script>  
+<link type="text/css" href="/media/css/smoothness.datepick.css" rel="stylesheet" />  
+</div>
+<div id="cxsb">
+<form action='/user/usermodify/' method='POST' enctype="multipart/form-data">
+<table>
+<tr><td width="88px">用户名：</td><td>{{no}}</td><td rowspan="6" width="200px"><img src="/media/images/header/{{no.avatar}}" alt="" /></td></tr>
+<tr><td>密 码：</td><td><input type="password" name="pwd" style="width:178px" value=""></td></tr>
+<tr><td >性 别：</td><td>男性：<input type="radio" checked="checked" name="sex" value="M" />女性：<input type="radio" name="sex" value="F" /></td></td></tr>
+<tr><td>邮 箱：</td><td><input type="text" name="mail" style="width:178px"></td></tr>
+<tr><td>电 话：</td><td><input type="text" name="phone" style="width:178px"></td></tr>
+<tr><td>头像：</td><td><input type="file" name="image" ></td></tr>
+</table>
+<input type="submit" value="保存信息" />
+</form>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}
+
+</body>
+</html>
